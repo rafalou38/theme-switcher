@@ -1,5 +1,5 @@
 {
-  "name": "theme-switcher",
+	"name": "theme-switcher",
 	"displayName": "theme switcher",
 	"description": "",
 	"version": "0.0.1",
@@ -10,14 +10,14 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:theme-switcher.helloWorld"
+		"*"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "theme-switcher.helloWorld",
-				"title": "Hello World"
+				"command": "theme-switcher.change-theme",
+				"title": "Change Theme"
 			}
 		]
 	},
