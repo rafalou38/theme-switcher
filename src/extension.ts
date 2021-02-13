@@ -3,6 +3,7 @@
 import * as vscode from "vscode";
 import { themes, setTheme } from "./theme";
 import * as statusBarItem from "./status";
+import { SidebarProvider } from "./SidebarProvider";
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -29,6 +30,15 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 
 	context.subscriptions.push(disposable);
+
+	const sidebarProvider = new SidebarProvider(context.extensionUri);
+
+	context.subscriptions.push(
+		vscode.window.registerWebviewViewProvider(
+			"themeSwitcher-sidebar",
+			sidebarProvider
+		)
+	);
 }
 
 // this method is called when your extension is deactivated
