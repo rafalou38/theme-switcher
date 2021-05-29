@@ -7,33 +7,33 @@ import { SidebarProvider } from "./SidebarProvider";
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log(
-		'Congratulations, your extension "theme-switcher" is now active!'
-	);
+  // Use the console to output diagnostic information (console.log) and errors (console.error)
+  // This line of code will only be executed once when your extension is activated
+  console.log(
+    'Congratulations, your extension "theme-switcher" is now active!'
+  );
 
-	statusBarItem.activate(context);
+  statusBarItem.activate(context);
 
-	context.subscriptions.push(
-		vscode.commands.registerCommand("theme-switcher.change-theme", async () => {
-			let newTheme = themes[Math.floor(Math.random() * themes.length)];
+  context.subscriptions.push(
+    vscode.commands.registerCommand("theme-switcher.change-theme", async () => {
+      let newTheme = themes[Math.floor(Math.random() * themes.length)];
 
-			setTheme(newTheme.id);
+      setTheme(newTheme.id);
 
-			vscode.window.showInformationMessage(`current theme: ${newTheme.name}`);
-			statusBarItem.setText(newTheme.name);
-		})
-	);
+      vscode.window.showInformationMessage(`current theme: ${newTheme.name}`);
+      statusBarItem.setText(newTheme.name);
+    })
+  );
 
-	const sidebarProvider = new SidebarProvider(context.extensionUri);
+  const sidebarProvider = new SidebarProvider(context.extensionUri);
 
-	context.subscriptions.push(
-		vscode.window.registerWebviewViewProvider(
-			"themeSwitcher-sidebar",
-			sidebarProvider
-		)
-	);
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider(
+      "themeSwitcher-sidebar",
+      sidebarProvider
+    )
+  );
 }
 
 // this method is called when your extension is deactivated
