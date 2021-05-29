@@ -21,34 +21,31 @@ export function getCurrentTheme(): Theme {
 }
 
 function getThemes(): Theme[] {
-  return extensions.all.reduce((acc: Array<Theme>, current: any) => {
+  return extensions.all.reduce((acc: Array<Theme>, current) => {
     let newVal: Array<Theme> = [];
-    const contributesThemes = current.packageJSON.contributes
-      ? current.packageJSON.contributes.themes
-        ? current.packageJSON.contributes.themes
-        : undefined
-      : undefined;
-    if (contributesThemes) {
-      for (var i = 0; i < contributesThemes.length; i++) {
-        const label = contributesThemes[i].label;
-        const id = contributesThemes[i].id ? contributesThemes[i].id : label;
-        const uiTheme =
-          contributesThemes[i].uiTheme === "vs-dark" ? "dark" : "light";
-        const extensionType = current.packageJSON.isBuiltin
-          ? "Built-in"
-          : "External";
-        newVal = [
-          ...newVal,
-          {
-            id,
-            name: label,
-            type: uiTheme,
-            extension: current.id,
-            extType: extensionType,
-          },
-        ];
-      }
-    }
+    const themeExts = current.packageJSON.contributes?.themes;
+    if (!themeExts) return acc;
+
+    themeExts.forEach((theme) => {
+      const label = theme.label;
+      const id = theme.id ? theme.id : label;
+      const uiTheme = theme.uiTheme === "vs-dark" ? "dark" : "light";
+      const extensionType = current.packageJSON.isBuiltin
+        ? "Built-in"
+        : "External";
+
+      newVal = [
+        ...newVal,
+        {
+          id,
+          name: label,
+          type: uiTheme,
+          extension: current.id,
+          extType: extensionType,
+        },
+      ];
+    });
+
     return [...acc, ...newVal];
   }, []);
 }
