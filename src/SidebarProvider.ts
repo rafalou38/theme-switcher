@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { getNonce } from "./getNonce";
+import { themes } from "./theme";
 
 export class SidebarProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
@@ -20,15 +21,19 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
 
     webviewView.webview.onDidReceiveMessage(async (data) => {
-      switch (data.type) {
-        case "onInfo": {
+      switch (data.type || data) {
+        case "getThemes": {
+          webviewView.webview.postMessage({ type: "updateThemes", themes });
+          break;
+        }
+        case "info": {
           if (!data.value) {
             return;
           }
           vscode.window.showInformationMessage(data.value);
           break;
         }
-        case "onError": {
+        case "error": {
           if (!data.value) {
             return;
           }
