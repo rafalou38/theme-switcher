@@ -26,7 +26,7 @@ function getThemes(): Theme[] {
     const themeExts = current.packageJSON.contributes?.themes;
     if (!themeExts) return acc;
 
-    themeExts.forEach((theme) => {
+    themeExts.forEach((theme: any) => {
       const label = theme.label;
       const id = theme.id ? theme.id : label;
       const uiTheme = theme.uiTheme === "vs-dark" ? "dark" : "light";
