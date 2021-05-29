@@ -15,21 +15,16 @@ export function activate(context: vscode.ExtensionContext) {
 
 	statusBarItem.activate(context);
 
-	let disposable = vscode.commands.registerCommand(
-		"theme-switcher.change-theme",
-		async () => {
+	context.subscriptions.push(
+		vscode.commands.registerCommand("theme-switcher.change-theme", async () => {
 			let newTheme = themes[Math.floor(Math.random() * themes.length)];
 
 			setTheme(newTheme.id);
 
-			vscode.window.showInformationMessage(
-				`current theme: ${newTheme.name}`
-			);
+			vscode.window.showInformationMessage(`current theme: ${newTheme.name}`);
 			statusBarItem.setText(newTheme.name);
-		}
+		})
 	);
-
-	context.subscriptions.push(disposable);
 
 	const sidebarProvider = new SidebarProvider(context.extensionUri);
 
