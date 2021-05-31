@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from "svelte";
-import { themes } from "./stores";
-
+	import { themes } from "./stores";
 	export let vscode: WebviewApi;
 
 	let favorites: Set<string> = new Set(['Abyss', "Default Light+"])

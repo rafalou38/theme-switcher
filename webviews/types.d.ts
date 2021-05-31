@@ -6,7 +6,6 @@ declare interface WebviewApi {
 
 declare function acquireVsCodeApi(): WebviewApi;
 
-
 declare interface ITheme {
   id: string;
   name: string;
@@ -14,3 +13,5 @@ declare interface ITheme {
   extension: string;
   extType: string;
 }
+
+declare module "*.svg";
