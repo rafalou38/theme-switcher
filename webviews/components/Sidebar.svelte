@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import { flip } from "svelte/animate";
 
-  import { themes } from "./stores";
+  import { currentTheme, themes } from "./stores";
 
   import FillStar from "../icons/star-solid.svg";
   import EmptyStar from "../icons/star-regular.svg";
@@ -23,7 +23,7 @@
 <div class="list__title">favorites</div>
 <ul class="list">
   {#each $themes.filter((e) => favorites.has(e.id)) as theme (theme.id)}
-    <li class="list__item" animate:flip={{ duration: 200 }}>
+    <li class="list__item" class:list__item--current={$currentTheme?.id === theme.id} animate:flip={{ duration: 200 }}>
       {theme.name}
       <button
         class="list__item__star"
@@ -39,7 +39,7 @@
 <div class="list__title">all themes</div>
 <ul class="list">
   {#each $themes.filter((e) => !favorites.has(e.id)) as theme (theme.id)}
-    <li class="list__item" animate:flip={{ duration: 200 }}>
+    <li class="list__item" class:list__item--current={$currentTheme?.id === theme.id} animate:flip={{ duration: 200 }}>
       {theme.name}
       <button
         class="list__item__star"
