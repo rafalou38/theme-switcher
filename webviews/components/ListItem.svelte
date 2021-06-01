@@ -1,6 +1,6 @@
 <script lang="ts">
   import { flip } from "svelte/animate";
-
+	import json5 from 'json5'
   import { currentTheme } from "./stores";
 
   import FillStar from "../icons/star-solid.svg";
@@ -11,6 +11,18 @@
   export let theme: ITheme;
   export let vscode: WebviewApi;
 
+
+	let foreground = "";
+	let background = "";
+
+	try{
+		let themeContent = json5.parse(theme.content);
+		foreground = themeContent.colors["sideBar.foreground"] || themeContent.colors["editor.foreground"]
+		background = themeContent.colors["sideBar.background"] || themeContent.colors["editor.background"]
+	}catch{
+		console.warn(`failed to get colors of ${theme.name}`);
+	}
+
   function setTheme() {
     vscode.postMessage({ type: "setTheme", theme: theme.id });
   }
@@ -20,6 +32,12 @@
   class="list__item"
   class:list__item--current={$currentTheme === theme.id}
   on:click={setTheme}
+	style={
+		`
+		--vscode-sideBar-background: ${background};
+		--vscode-sideBar-foreground: ${foreground};
+		`
+	}
 >
   {theme.name}
   <button
@@ -56,6 +74,8 @@
     align-items: center;
 
     font-weight: 500;
+
+		color: var(--vscode-sideBar-foreground);
     &::before {
       content: "";
       background: var(--vscode-sideBar-background);
@@ -81,7 +101,7 @@
     background: none;
 
     :global(svg) {
-      color: var(--vscode-foreground);
+      color: var(--vscode-sideBar-foreground);
     }
   }
 </style>
