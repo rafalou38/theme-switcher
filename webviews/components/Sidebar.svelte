@@ -53,19 +53,27 @@
 </ul>
 
 <style lang="scss">
+  :global(body){
+    background: var(--vscode-sideBar-background);
+  }
   .list {
+    padding: 0;
+    margin:0;
     list-style: none;
+
   }
   .list__title {
-    background: var(--vscode-dropdown-listBackground);
-    color: var(--vscode-dropdown-foreground);
+    background: var(--vscode-sideBarSectionHeader-background);
+    color: var(--vscode-foreground);
+    margin: 0;
+    padding: .5em;
   }
   .list__item {
     position: relative;
     z-index: 1;
 
-    height: 2em;
-    padding: 0.5em;
+    height: 4em;
+    padding: .5em 1em;
 
     user-select: none;
     cursor: pointer;
@@ -76,7 +84,7 @@
     font-weight: 500;
     &::before {
       content: "";
-      background: var(--vscode-editor-background);
+      background: var(--vscode-sideBar-background);
       position: absolute;
       z-index: -1;
       top: 0;
