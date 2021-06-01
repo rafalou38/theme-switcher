@@ -8,6 +8,18 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
   constructor(private readonly _extensionUri: vscode.Uri) {}
 
+  private postMessage(message: any) {
+    this._view?.webview.postMessage(message);
+  }
+
+  public updateThemes(currentTheme?: ITheme) {
+    this.postMessage({ type: "updateThemes", themes });
+    this.postMessage({
+      type: "updateCurrentThemes",
+      theme: currentTheme || getCurrentTheme(),
+    });
+  }
+
   public resolveWebviewView(webviewView: vscode.WebviewView) {
     this._view = webviewView;
 
@@ -23,11 +35,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     webviewView.webview.onDidReceiveMessage(async (data) => {
       switch (data.type || data) {
         case "getThemes": {
-          webviewView.webview.postMessage({ type: "updateThemes", themes });
-          webviewView.webview.postMessage({
-            type: "updateCurrentThemes",
-            theme: getCurrentTheme(),
-          });
+          this.updateThemes();
           break;
         }
         case "info": {
