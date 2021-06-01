@@ -12,6 +12,7 @@ declare interface ITheme {
   type: string;
   extension: string;
   extType: string;
+  content: string;
 }
 
 declare module "*.svg";

@@ -1,4 +1,7 @@
+import { readFileSync } from "fs";
+import { join } from "path";
 import { extensions, workspace } from "vscode";
+import { contentCache } from "./cache";
 
 export const themes = getThemes();
 
@@ -25,6 +28,17 @@ function getThemes(): ITheme[] {
 
     themeExts.forEach((theme: any) => {
       const label = theme.label;
+      const path = join(current.extensionPath, theme.path);
+      let content: string;
+      if (contentCache.has(path)) {
+        content = contentCache.get(path) as string;
+      } else {
+        let f = readFileSync(path);
+        console.log("read file: " + path);
+        content = f.toString();
+        contentCache.set(path, content);
+      }
+
       const id = theme.id ? theme.id : label;
       const uiTheme = theme.uiTheme === "vs-dark" ? "dark" : "light";
       const extensionType = current.packageJSON.isBuiltin
@@ -39,6 +53,7 @@ function getThemes(): ITheme[] {
           type: uiTheme,
           extension: current.id,
           extType: extensionType,
+          content,
         },
       ];
     });
