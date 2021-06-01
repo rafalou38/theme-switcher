@@ -1,13 +1,5 @@
 import { extensions, workspace } from "vscode";
 
-interface Theme {
-  id: string;
-  name: string;
-  type: string;
-  extension: string;
-  extType: string;
-}
-
 export const themes = getThemes();
 const workbenchConfig = workspace.getConfiguration("workbench");
 
@@ -15,14 +7,14 @@ export function setTheme(id: string): void {
   workbenchConfig.update("colorTheme", id);
 }
 
-export function getCurrentTheme(): Theme {
+export function getCurrentTheme(): ITheme {
   let currentTheme = workbenchConfig.get("colorTheme");
   return themes.filter((e) => e.id === currentTheme)[0];
 }
 
-function getThemes(): Theme[] {
-  return extensions.all.reduce((acc: Array<Theme>, current) => {
-    let newVal: Array<Theme> = [];
+function getThemes(): ITheme[] {
+  return extensions.all.reduce((acc: Array<ITheme>, current) => {
+    let newVal: Array<ITheme> = [];
     const themeExts = current.packageJSON.contributes?.themes;
     if (!themeExts) return acc;
 
