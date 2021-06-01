@@ -1,56 +1,53 @@
 <script lang="ts">
   import { flip } from "svelte/animate";
 
-  import { currentTheme} from "./stores";
+  import { currentTheme } from "./stores";
 
   import FillStar from "../icons/star-solid.svg";
   import EmptyStar from "../icons/star-regular.svg";
 
-	export let favorites: Set<string>;
+  export let favorites: Set<string>;
 
-	export let theme: ITheme;
-	export let vscode: WebviewApi;
+  export let theme: ITheme;
+  export let vscode: WebviewApi;
 
-	function setTheme() {
-		vscode.postMessage({type: "setTheme", theme:theme.id});
-	}
+  function setTheme() {
+    vscode.postMessage({ type: "setTheme", theme: theme.id });
+  }
 </script>
 
-
-<li class="list__item" class:list__item--current={$currentTheme === theme.id} on:click={setTheme}>
-	{theme.name}
-	<button
-		class="list__item__star"
-		on:click={() => {
-			if (favorites.has(theme.id)) {
-
-				favorites.delete(theme.id);
-			}else{
-
-				favorites.add(theme.id);
-			}
-			favorites = favorites;
-		}}>
-		{#if favorites.has(theme.id)}
-
-			 <FillStar />
-		{:else}
-		<EmptyStar />
-		{/if}
-		</button
-	>
+<li
+  class="list__item"
+  class:list__item--current={$currentTheme === theme.id}
+  on:click={setTheme}
+>
+  {theme.name}
+  <button
+    class="list__item__star"
+    on:click={() => {
+      if (favorites.has(theme.id)) {
+        favorites.delete(theme.id);
+      } else {
+        favorites.add(theme.id);
+      }
+      favorites = favorites;
+    }}
+  >
+    {#if favorites.has(theme.id)}
+      <FillStar />
+    {:else}
+      <EmptyStar />
+    {/if}
+  </button>
 </li>
 
-
-
-
 <style lang="scss">
-	.list__item {
+  .list__item {
     position: relative;
     z-index: 1;
 
     height: 4em;
-    padding: .5em 1em;
+    padding: 0.5em 1em;
 
     user-select: none;
     cursor: pointer;
