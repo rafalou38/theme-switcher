@@ -18,12 +18,16 @@
   onMount(() => {
     vscode.postMessage("getThemes");
   });
+
+	function setTheme(id: string) {
+		vscode.postMessage({type: "setTheme", theme:id});
+	}
 </script>
 
 <div class="list__title">favorites</div>
 <ul class="list">
   {#each $themes.filter((e) => favorites.has(e.id)) as theme (theme.id)}
-    <li class="list__item" class:list__item--current={$currentTheme?.id === theme.id} animate:flip={{ duration: 200 }}>
+    <li class="list__item" class:list__item--current={$currentTheme === theme.id} animate:flip={{ duration: 200 }} on:click={()=>setTheme(theme.id)}>
       {theme.name}
       <button
         class="list__item__star"
@@ -39,7 +43,7 @@
 <div class="list__title">all themes</div>
 <ul class="list">
   {#each $themes.filter((e) => !favorites.has(e.id)) as theme (theme.id)}
-    <li class="list__item" class:list__item--current={$currentTheme?.id === theme.id} animate:flip={{ duration: 200 }}>
+    <li class="list__item" class:list__item--current={$currentTheme === theme.id} animate:flip={{ duration: 200 }} on:click={()=>setTheme(theme.id)}>
       {theme.name}
       <button
         class="list__item__star"

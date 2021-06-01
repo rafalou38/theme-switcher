@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { getNonce } from "./getNonce";
-import { getCurrentTheme, themes } from "./theme";
+import { getCurrentTheme, themes, setTheme } from "./theme";
 
 export class SidebarProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
@@ -12,11 +12,11 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     this._view?.webview.postMessage(message);
   }
 
-  public updateThemes(currentTheme?: ITheme) {
+  public updateThemes(currentTheme?: string) {
     this.postMessage({ type: "updateThemes", themes });
     this.postMessage({
       type: "updateCurrentThemes",
-      theme: currentTheme || getCurrentTheme(),
+      theme: currentTheme || getCurrentTheme().id,
     });
   }
 
@@ -36,6 +36,11 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       switch (data.type || data) {
         case "getThemes": {
           this.updateThemes();
+          break;
+        }
+        case "setTheme": {
+          setTheme(data.theme);
+          this.updateThemes(data.theme);
           break;
         }
         case "info": {

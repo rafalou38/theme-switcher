@@ -33,7 +33,7 @@ export function activate(context: vscode.ExtensionContext) {
       vscode.window.showInformationMessage(`current theme: ${newTheme.name}`);
       statusBarItem.setText(newTheme.name);
 
-      sidebarProvider.updateThemes(newTheme);
+      sidebarProvider.updateThemes(newTheme.id);
     })
   );
 }

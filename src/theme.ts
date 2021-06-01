@@ -10,10 +10,11 @@ export function setTheme(id: string): void {
 export function getCurrentTheme(): ITheme {
   const workbenchConfig = workspace.getConfiguration("workbench");
   let currentTheme = workbenchConfig.get("colorTheme");
-
-  console.log(currentTheme);
-
-  return themes.filter((e) => e.id === currentTheme)[0];
+  if (currentTheme) {
+    return themes.filter((e) => e.id === currentTheme)[0];
+  } else {
+    console.error("no theme found!");
+  }
 }
 
 function getThemes(): ITheme[] {
